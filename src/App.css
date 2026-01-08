@@ -1,67 +1,121 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+*, *::before, *::after { box-sizing: border-box; }
+
 * {
 	margin: 0;
 	padding: 0;
 	font-family: "Kanit", sans-serif;
 }
 
-body {
-  overflow-y: scroll;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #c74545, #18d1bf);
+html, body {
+	margin: 0;
+  	height: 100%;
+  	background: linear-gradient(135deg, #c74545, #18d1bf);
+	background-attachment: fixed;
 }
 
-h1 {
-	font-weight: 700;
-}
+/* Custom font weights */
+h1 { font-weight: 700; }
 
-h2 {
-  	font-weight: 400;
-}
+h2 { font-weight: 400; }
 
-h3 {
-  	font-weight: 300;
-}
+h3 { font-weight: 300; }
 
-h4 {
-  	font-weight: 400;
-}
+h4 { font-weight: 400; }
 
-h5 {
-  	font-weight: 200;
-}
+h5 { font-weight: 200; }
 
-h6 {
-  	font-weight: 100;
-}
+h6 { font-weight: 100; }
 
 #root {
-	width: 100%;
 	height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
-.container {
-	display: flex;
-	justify-content: center;
-	align-items: flex-end;
-	height: 100vh;
+/* Scrollbar settings */
+.scroll-container {
+	width: 300px;
+	height: 200px;
+	overflow-y: scroll;
 }
+.scroll-container::-webkit-scrollbar {
+	width: 8px;
+}
+.scroll-container::-webkit-scrollbar-track {
+	background: transparent;
+}
+.scroll-container::-webkit-scrollbar-thumb {
+	background-color: #888;
+	border-radius: 4px;
+	border: 2px solid transparent;
+}
+
+
+.container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* Messages */
+.messages {
+	flex: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: flex-end;
+	gap: 0.5rem;
+	width: 70%;
+}
+.user-msg, .ai-msg {
+	display: flex;
+	width: 100%;
+	border-radius: 15px;
+}
+.user-msg {
+	flex-wrap: wrap;
+	color: white;
+	background-color: rgba(55, 55, 55, 0.408);
+	justify-content: flex-end;
+	text-align: right;
+	max-width: 50%;
+	padding: .5rem 1rem;
+}
+.ai-msg {
+	padding: 1rem 0;
+}
+
+/* Input */
 .input-container {
 	display: flex;
 	justify-content: center;
-	align-items: flex-end;
-	
+	padding-top: 1.5rem;
 	padding-bottom: 3rem;
-	margin: 0 3rem;
-	
-	width: 100vw;
-	height: 14em;
+	width: 100%;
+}
+.input-wrapper {
+	position: relative;
+	width: 70%;
 }
 .user-input {
+	padding: 0 1rem;
 	border-radius: 15px;
 	font-size: 15px;
 	border: none;
-	width: 70%;
-	height: 20%;
+	width: 100%;
+	height: 3em;
+}
+.user-input:focus {
+	outline: none;
+}
+
+.send-btn {
+	position: absolute;
+	right: 1rem;
+	top: 50%;
+	transform: translateY(-50%);
 }

@@ -26,19 +26,25 @@ export default function App() {
 		<div className="container">
 			<div className="messages">
 				{messages.map((msg, index) => (
-					<div key={index}>
+					<div 
+						key={index}
+						className={`${msg.role === "user" ? "user" : "ai"}-msg`}
+					>
 						{msg.content}
 					</div>
 				))}
 			</div>
 			<div className="input-container">
-				<input 
-					value={input}
-					onChange={e => setInput(e.target.value)}
-					placeholder='Ask Liquid'
-					className="user-input"
-				/>
-				<button onClick={handleSend}>Send</button>
+				<div className="input-wrapper">
+					<input 
+						value={input}
+						onChange={e => setInput(e.target.value)}
+						placeholder='Ask Liquid'
+						onKeyDown={(e) => e.key === "Enter" && handleSend()}
+						className="user-input"
+					/>
+					<button onClick={handleSend} className="send-btn">Send</button>
+				</div>
 			</div>
 		</div>
 	);
