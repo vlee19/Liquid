@@ -4,8 +4,37 @@ import './App.css'
 export default function App() {
 	const [messages, setMessages] = useState([]);
 	const [input, setInput] = useState("");
+	
+	const generatedBotResponse = async (history) => {
+		const updateHistory = (text) => {
+			setChatHistory(prev => [...prev.filter(msg => msg.text !== "Thinking..."), { role: "assistant", text }]);
+		}
 
-	const handleSend = () => {
+		//format chat history for API Request
+		history =history.map(({ role, text }) => ({ role, parts: [{text}] }));
+		
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ messages: history })
+		};
+
+		try{
+			const response = await fetch(import.meta.env.VITE_API_URL, requestOptions);
+			const data = await response.json();
+			if(!response.ok) throw new Error(data.error.message || 'Something went wrong!');
+		
+			console.log();
+			const apiResponseText = data.candidates[0].contents.parts[0].text.replace(/\*\*(.*?)\*\*/g, '$1').trim();
+
+			updateHistory(apiResponseText);
+		}
+		catch(error){
+		console.log(error);
+	}
+};
+
+	const handleSend = () => {//current messages and input value
 		if(!input.trim()) return;
 
 		const userMessage = {
