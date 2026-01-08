@@ -31,11 +31,12 @@ export default function App() {
 					</div>
 				))}
 			</div>
-			<div className="input">
+			<div className="input-container">
 				<input 
-					value={input} 
+					value={input}
 					onChange={e => setInput(e.target.value)}
 					placeholder='Ask Liquid'
+					className="user-input"
 				/>
 				<button onClick={handleSend}>Send</button>
 			</div>

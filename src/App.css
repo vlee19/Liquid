@@ -42,5 +42,26 @@ h6 {
 }
 
 .container {
-  
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	height: 100vh;
+}
+.input-container {
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	
+	padding-bottom: 3rem;
+	margin: 0 3rem;
+	
+	width: 100vw;
+	height: 14em;
+}
+.user-input {
+	border-radius: 15px;
+	font-size: 15px;
+	border: none;
+	width: 70%;
+	height: 20%;
 }
