@@ -118,4 +118,11 @@ h6 { font-weight: 100; }
 	right: 1rem;
 	top: 50%;
 	transform: translateY(-50%);
+	border: none;
+	color: white;
+	padding: 5px;
+	background-color: rgb(149, 149, 149);
+}
+.send-btn:hover {
+	cursor: pointer;
 }
