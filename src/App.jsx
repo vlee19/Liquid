@@ -5,36 +5,8 @@ export default function App() {
 	const [messages, setMessages] = useState([]);
 	const [input, setInput] = useState("");
 	
-	const generatedBotResponse = async (history) => {
-		const updateHistory = (text) => {
-			setChatHistory(prev => [...prev.filter(msg => msg.text !== "Thinking..."), { role: "assistant", text }]);
-		}
 
-		//format chat history for API Request
-		history =history.map(({ role, text }) => ({ role, parts: [{text}] }));
-		
-		const requestOptions = {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ messages: history })
-		};
-
-		try{
-			const response = await fetch(import.meta.env.VITE_API_URL, requestOptions);
-			const data = await response.json();
-			if(!response.ok) throw new Error(data.error.message || 'Something went wrong!');
-		
-			console.log();
-			const apiResponseText = data.candidates[0].contents.parts[0].text.replace(/\*\*(.*?)\*\*/g, '$1').trim();
-
-			updateHistory(apiResponseText);
-		}
-		catch(error){
-		console.log(error);
-	}
-};
-
-	const handleSend = () => {//current messages and input value
+	const handleSend = async () => {
 		if(!input.trim()) return;
 
 		const userMessage = {
@@ -42,13 +14,51 @@ export default function App() {
 			content: input
 		};
 
-		const aiMessage = {
-			role: "assistant",
-			content: "My response will go here!"
+		// Add user message and thinking placeholder
+		setMessages(prev => [...prev, userMessage]);
+		setInput("");
+
+		// Add thinking message
+		setMessages(prev => [...prev, { role: "assistant", content: "Thinking..." }]);
+
+		// Prepare history for API request
+		const history = [...messages, userMessage].map(({ role, content }) => ({ 
+			role: role === "user" ? "user" : "model", 
+			parts: [{ text: content }] 
+		}));
+
+		const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+		const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ contents: history })
 		};
 
-		setMessages(prev => [...prev, userMessage, aiMessage]);
-		setInput("");
+		try {
+			const response = await fetch(API_URL, requestOptions);
+			if(!response.ok) {
+				const errorData = await response.json().catch(() => ({}));
+				throw new Error(errorData.error?.message || 'Something went wrong!');
+			}
+			
+			const data = await response.json();
+			const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, '$1').trim();
+
+			// Replace thinking message with actual response
+			setMessages(prev => [
+				...prev.filter(msg => msg.content !== "Thinking..."), 
+				{ role: "assistant", content: apiResponseText }
+			]);
+		} catch(error) {
+			console.log(error);
+			// Replace thinking message with error message
+			setMessages(prev => [
+				...prev.filter(msg => msg.content !== "Thinking..."), 
+				{ role: "assistant", content: "Sorry, something went wrong. Please try again." }
+			]);
+		}
 	};
 
 	return (
