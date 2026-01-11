@@ -48,16 +48,37 @@ export default function App() {
 			const data = await response.json();
 			const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, '$1').trim();
 
+			// Make a second query to get source links
+			const linksPrompt = `Based on your previous answer: "${apiResponseText}", provide me with a list of relevant source links and URLs that were used or would support this answer. Format each link on a new line starting with "- "`;
+			
+			const linksHistory = [...history, { role: "model", parts: [{ text: apiResponseText }] }, { role: "user", parts: [{ text: linksPrompt }] }];
+			
+			const linksRequestOptions = {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ contents: linksHistory })
+			};
+
+			const linksResponse = await fetch(API_URL, linksRequestOptions);
+			let extractedLinks = [];
+
+			if(linksResponse.ok) {
+				const linksData = await linksResponse.json();
+				const linksText = linksData.candidates[0].content.parts[0].text;
+				
+				// Extract URLs from the response
+				const urlPattern = /https?:\/\/[^\s]+/g;
+				const urls = linksText.match(urlPattern) || [];
+				extractedLinks = urls.map(url => ({ url }));
+			}
+
 			// Replace thinking message with actual response
 			setMessages(prev => [
 				...prev.filter(msg => msg.content !== "Thinking..."), 
 				{ 
 					role: "assistant", 
 					content: apiResponseText,  
-					links: [
-						{ url: "https://fonts.google.com/icons?selected=Material+Symbols+Outlined:arrow_right_alt:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=enter&icon.size=24&icon.color=%23e3e3e3" },
-						{ url: "https://fonts.google.com/icons?selected=Material+Symbols+Outlined:arrow_right_alt:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=enter&icon.size=24&icon.color=%23e3e3e3" }
-					]
+					links: extractedLinks
 				}
 			]);
 		} catch(error) {
