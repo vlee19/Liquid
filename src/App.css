@@ -126,3 +126,28 @@ h6 { font-weight: 100; }
 .send-btn:hover {
 	cursor: pointer;
 }
+
+/* Links */
+.links-container {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 500px;
+	height: 100vh;
+	padding: .5rem;
+	background: rgb(69, 68, 68);
+}
+.link-box {
+	margin: 0.75rem;
+}
+.link-box a {
+	margin-bottom: 1rem;
+	display: block;
+	font-size: 1.25rem;
+	color: white;
+	text-decoration: none;
+	word-break: break-all;
+}
+.link-box a:hover {
+	text-decoration: underline;
+}

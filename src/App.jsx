@@ -4,6 +4,8 @@ import './App.css'
 export default function App() {
 	const [messages, setMessages] = useState([]);
 	const [input, setInput] = useState("");
+
+	const [showLinks, setShowLinks] = useState(false);
 	
 
 	const handleSend = async () => {
@@ -49,7 +51,14 @@ export default function App() {
 			// Replace thinking message with actual response
 			setMessages(prev => [
 				...prev.filter(msg => msg.content !== "Thinking..."), 
-				{ role: "assistant", content: apiResponseText }
+				{ 
+					role: "assistant", 
+					content: apiResponseText,  
+					links: [
+						{ url: "https://fonts.google.com/icons?selected=Material+Symbols+Outlined:arrow_right_alt:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=enter&icon.size=24&icon.color=%23e3e3e3" },
+						{ url: "https://fonts.google.com/icons?selected=Material+Symbols+Outlined:arrow_right_alt:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=enter&icon.size=24&icon.color=%23e3e3e3" }
+					]
+				}
 			]);
 		} catch(error) {
 			console.log(error);
@@ -70,6 +79,15 @@ export default function App() {
 						className={`${msg.role === "user" ? "user" : "ai"}-msg`}
 					>
 						{msg.content}
+
+						{msg.role === "assistant" && msg.links?.length > 0 && (
+							<button
+								className="view-links-btn"
+								onClick={() => setShowLinks(prev => !prev)}
+							>
+								{showLinks ? "Hide" : "View"}
+							</button>
+						)}
 					</div>
 				))}
 			</div>
@@ -85,6 +103,21 @@ export default function App() {
 					<button onClick={handleSend} className="send-btn">Send</button>
 				</div>
 			</div>
+			{showLinks && (
+				<div className="links-container">
+					{messages
+						.filter(msg => msg.role === "assistant" && msg.links?.length > 0)
+						.map((msg, i) => (
+						<div key={i} className="link-box">
+							{msg.links.map((l, j) => (
+								<a key={j} href={l.url} target="_blank" rel="noreferrer">
+									{l.url}
+								</a>
+							))}
+						</div>
+					))}
+				</div>
+			)}
 		</div>
 	);
 }
