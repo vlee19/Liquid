@@ -54,6 +54,7 @@ h6 { font-weight: 100; }
 
 
 .container {
+	margin-top: 3rem;
 	flex: 1;
 	display: flex;
 	flex-direction: column;
@@ -66,15 +67,14 @@ h6 { font-weight: 100; }
 	overflow-y: auto;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
 	align-items: flex-end;
 	gap: 0.5rem;
 	width: 70%;
 }
 .user-msg, .ai-msg {
 	display: flex;
-	width: 100%;
 	border-radius: 15px;
+	font-size: 22px;
 }
 .user-msg {
 	flex-wrap: wrap;
@@ -82,11 +82,27 @@ h6 { font-weight: 100; }
 	background-color: rgba(55, 55, 55, 0.408);
 	justify-content: flex-end;
 	text-align: right;
-	max-width: 50%;
+	max-width: 60%;
 	padding: .5rem 1rem;
 }
 .ai-msg {
-	padding: 1rem 0;
+	position: relative;
+	padding: 1.5rem 2.5rem;
+	background-color: rgba(220, 220, 220, 0.25);
+	color: #1a1a1a;
+	max-width: 80%;
+	align-self: flex-start;
+}
+.view-links-btn {
+	position: absolute;
+	bottom: 0.5rem;
+	right: 0.5rem;
+
+	display: flex;
+	height: 50px;
+	width: 7rem;
+	justify-content: center;
+	align-items: center;
 }
 
 /* Input */
