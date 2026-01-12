@@ -20,13 +20,22 @@ h1 { font-weight: 700; }
 
 h2 { font-weight: 400; }
 
-h3 { font-weight: 300; }
+h3 { font-weight: 600; font-size: 30px;}
 
 h4 { font-weight: 400; }
 
 h5 { font-weight: 200; }
 
 h6 { font-weight: 100; }
+
+/* Formatting */
+ul {
+	margin-left: 1.5rem;
+}
+hr {
+	border: none;
+	margin: 1.5rem 0;
+}
 
 #root {
 	height: 100%;
@@ -75,6 +84,7 @@ h6 { font-weight: 100; }
 	display: flex;
 	border-radius: 15px;
 	font-size: 22px;
+	flex-direction: column;
 }
 .user-msg {
 	flex-wrap: wrap;
@@ -93,6 +103,7 @@ h6 { font-weight: 100; }
 	max-width: 80%;
 	align-self: flex-start;
 }
+
 .view-links-btn {
 	position: absolute;
 	bottom: 0.5rem;
@@ -152,6 +163,7 @@ h6 { font-weight: 100; }
 	height: 100vh;
 	padding: .5rem;
 	background: rgb(69, 68, 68);
+	z-index: 1000;
 }
 .link-box {
 	margin: 0.75rem;

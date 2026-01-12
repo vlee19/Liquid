@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import './App.css'
+import ReactMarkDown from 'react-markdown';
 
 export default function App() {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
 
+	const [openLinkBox, setOpenLinkBox] = useState(false);
     const [showLinksId, setShowLinksId] = useState(null);
     
 
@@ -100,20 +102,36 @@ export default function App() {
                         key={index}
                         className={`${msg.role === "user" ? "user" : "ai"}-msg`}
                     >
-                        {msg.content}
+						<ReactMarkDown>
+                        	{msg.content}
+						</ReactMarkDown>
 
                         {msg.role === "assistant" && msg.links?.length > 0 && (
                             <button
                                 className="view-links-btn"
-                                onClick={() => setShowLinksId(showLinksId === msg.id ? null : msg.id)}
+                                onClick={() => {
+										setShowLinksId(showLinksId === msg.id ? null : msg.id),
+										setOpenLinkBox(!openLinkBox)
+									}
+								}
                             >
-                                {showLinksId === msg.id ? "Hide" : "View"}
+                                {showLinksId === msg.id && openLinkBox === true ? "Hide" : "View"}
                             </button>
                         )}
 
-                        {msg.role === "assistant" && msg.links?.length > 0 && showLinksId === msg.id && (
+                        {msg.role === "assistant" && msg.links?.length > 0 && showLinksId === msg.id && openLinkBox === true && (
                             <div className="links-container">
                                 <div className="link-box">
+									<button
+										className="close-btn"
+										onClick={() => {
+											setShowLinksId(showLinksId === msg.id ? null : msg.id),
+											setOpenLinkBox(!openLinkBox)
+										}
+									}
+									>
+										Close
+									</button>
                                     {msg.links.map((l, j) => (
                                         <a key={j} href={l.url} target="_blank" rel="noreferrer">
                                             {l.url}
