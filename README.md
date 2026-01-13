@@ -47,5 +47,4 @@ By integrating transparency directly into the conversational interface, Liquid l
 
 ## Project Links
 - Demo Video –
-- Presentation file – 
-- Google Slides link –https://docs.google.com/presentation/d/1dAJQwjiOP72ATxbttCv4y7923x2NkQcyEqn49hhzsqY/edit?usp=sharing
+- Google Slides link – https://docs.google.com/presentation/d/1dAJQwjiOP72ATxbttCv4y7923x2NkQcyEqn49hhzsqY/edit?usp=sharing
