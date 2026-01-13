@@ -118,7 +118,7 @@ hr {
 	padding: 1.5rem 2.5rem;
 	background-color: rgba(220, 220, 220, 0.25);
 	color: #1a1a1a;
-	max-width: 70%;
+	max-width: 80%;
 	align-self: flex-start;
 }
 .ai-msg.active {
