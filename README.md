@@ -9,11 +9,11 @@ Liquid is designed to address the growing tendency for users to accept AI-genera
 By integrating transparency directly into the conversational interface, Liquid lowers the barrier to verification and exploration. Users can choose when and how deeply to investigate supporting sources, allowing them to contextualize responses rather than passively consume them. This design approach shifts the role of AI from an authority figure to a starting point for inquiry, helping users develop more informed and reflective interactions with AI systems.
 
 ## Technologies Used
--React – Frontend UI and state management
--JavaScript (ES6+) – Application logic
--Vite – Development and build tooling
--Google Gemini API – Large language model for response generation
--HTML & CSS – Layout and styling
+- React – Frontend UI and state management
+- JavaScript (ES6+) – Application logic
+- Vite – Development and build tooling
+- Google Gemini API – Large language model for response generation
+- HTML & CSS – Layout and styling
 
 ## ⚙️ Setup & Installation Instructions
 
