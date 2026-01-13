@@ -95,7 +95,7 @@ hr {
 	overflow: visible;
 }
 .messages.links-open {
-	transform: translateX(-11.5rem);
+	transform: translateX(-9.5rem);
 }
 .user-msg, .ai-msg {
 	display: flex;
@@ -175,7 +175,7 @@ hr {
 	transition: transform 0.5s ease;
 }
 .input-container.links-open {
-	transform: translateX(-11.5rem);
+	transform: translateX(-9.5rem);
 }
 .input-wrapper {
 	position: relative;
@@ -220,7 +220,7 @@ hr {
 	position: fixed;
 	top: 0;
 	right: 0;
-	width: 25rem;
+	width: 23rem;
 	height: 100vh;
 	padding: .5rem;
 	background: rgba(72, 72, 72, 0.547);
@@ -241,7 +241,7 @@ hr {
 .link-box a {
 	margin-bottom: 1rem;
 	display: block;
-	font-size: 1.25rem;
+	font-size: 1rem;
 	color: white;
 	text-decoration: none;
 	word-break: break-all;
@@ -278,14 +278,14 @@ hr {
 	transition: transform 0.5s ease;
 }
 .arrow-btn.open {
-	transform: translateY(-50%) translateX(-25rem);
+	transform: translateY(-50%) translateX(-23rem);
 }
 
 .arrow-btn:not(.open):hover {
 	transform: translateY(-50%) translateX(-0.6rem);
 }
 .arrow-btn.open:hover {
-	transform: translateY(-50%) translateX(-24.5rem);
+	transform: translateY(-50%) translateX(-22.5rem);
 }
 
 .arrow-btn svg {
