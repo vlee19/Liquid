@@ -65,11 +65,11 @@ hr {
 }
 .welcome-header {
 	font-weight: 400;
-	font-size: 60px;
+	font-size: 3.2rem;
 }
 .typing-subtitle {
 	font-weight: 200;
-	font-size: 1.5rem;
+	font-size: 1.2rem;
 }
 .clear-btn {
 	position: fixed;
