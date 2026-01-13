@@ -45,4 +45,7 @@ By integrating transparency directly into the conversational interface, Liquid l
 1. Valerie Lee - Frontend Programmer: Webpage design, UI display, Human Computer Interaction.
 2. Alexander Hued - Backend Programmer: Gemini API Implementation, Multi-Query Handling, Prompt Engineering.
 
-## Project Link
+## Project Links
+- Demo Video –
+- Presentation file – 
+- Google Slides link –https://docs.google.com/presentation/d/1dAJQwjiOP72ATxbttCv4y7923x2NkQcyEqn49hhzsqY/edit?usp=sharing
