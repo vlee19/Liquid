@@ -95,12 +95,12 @@ hr {
 	overflow: visible;
 }
 .messages.links-open {
-	transform: translateX(-14.5rem);
+	transform: translateX(-11.5rem);
 }
 .user-msg, .ai-msg {
 	display: flex;
 	border-radius: 15px;
-	font-size: 22px;
+	font-size: 20px;
 	flex-direction: column;
 	margin-bottom: 2rem;
 }
@@ -118,7 +118,7 @@ hr {
 	padding: 1.5rem 2.5rem;
 	background-color: rgba(220, 220, 220, 0.25);
 	color: #1a1a1a;
-	max-width: 80%;
+	max-width: 70%;
 	align-self: flex-start;
 }
 .ai-msg.active {
@@ -169,13 +169,13 @@ hr {
 	display: flex;
 	justify-content: center;
 	margin-top: 1.5rem;
-	padding-bottom: 3rem;
+	padding-bottom: 2.5rem;
 	width: 100%;
 
 	transition: transform 0.5s ease;
 }
 .input-container.links-open {
-	transform: translateX(-14.5rem);
+	transform: translateX(-11.5rem);
 }
 .input-wrapper {
 	position: relative;
@@ -184,7 +184,7 @@ hr {
 .user-input {
 	padding: 0 1rem;
 	border-radius: 15px;
-	font-size: 17px;
+	font-size: 15px;
 	border: none;
 	width: 100%;
 	height: 3em;
@@ -220,7 +220,7 @@ hr {
 	position: fixed;
 	top: 0;
 	right: 0;
-	width: 30rem;
+	width: 25rem;
 	height: 100vh;
 	padding: .5rem;
 	background: rgba(72, 72, 72, 0.547);
@@ -278,14 +278,14 @@ hr {
 	transition: transform 0.5s ease;
 }
 .arrow-btn.open {
-	transform: translateY(-50%) translateX(-30rem);
+	transform: translateY(-50%) translateX(-25rem);
 }
 
 .arrow-btn:not(.open):hover {
 	transform: translateY(-50%) translateX(-0.6rem);
 }
 .arrow-btn.open:hover {
-	transform: translateY(-50%) translateX(-29.5rem);
+	transform: translateY(-50%) translateX(-24.5rem);
 }
 
 .arrow-btn svg {
@@ -352,17 +352,17 @@ hr {
 	opacity: 1;
 }
 .modal h2 {
-	font-size: 50px;
+	font-size: 3rem;
 	font-weight: 500;
 }
 .modal p {
-	font-size: 26px;
+	font-size: 1.5rem;
 	font-weight: 400;
 }
 .confirm-btn, .cancel-btn {
 	margin-top: 0.5rem;
 	border: none;
-	font-size: 17px;
+	font-size: 1rem;
 	padding: .5rem 1rem;
 	border-radius: .5rem;
 	transition: background-color 0.3s ease, color 0.3s ease;
