@@ -27,7 +27,7 @@ By integrating transparency directly into the conversational interface, Liquid l
    ```bash
    git clone https://github.com/your-username/colorstackwinterhack2025-Liquid.git
 2. Install dependancies
-   -npm install (inside terminal)
+   - npm install (inside terminal)
 3. Create a .env file(Input text field below into file and save to src section of app)
    -VITE_GEMINI_API_KEY=your_api_key_here
 4. Start the development server
