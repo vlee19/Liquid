@@ -100,7 +100,7 @@ hr {
 .user-msg, .ai-msg {
 	display: flex;
 	border-radius: 15px;
-	font-size: 20px;
+	font-size: 18px;
 	flex-direction: column;
 	margin-bottom: 2rem;
 }
