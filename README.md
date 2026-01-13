@@ -50,3 +50,7 @@ By integrating transparency directly into the conversational interface, Liquid l
 ## Project Links
 - Demo Video – https://www.youtube.com/watch?v=Uftg0OHcVE8
 - Google Slides link – https://docs.google.com/presentation/d/1dAJQwjiOP72ATxbttCv4y7923x2NkQcyEqn49hhzsqY/edit?usp=sharing
+
+## Additional Screenshots
+<img width="1918" height="903" alt="image" src="https://github.com/user-attachments/assets/3559b5c2-9e7f-4ca9-8128-c7024944ad11" />
+
