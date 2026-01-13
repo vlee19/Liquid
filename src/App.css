@@ -95,7 +95,7 @@ hr {
 	overflow: visible;
 }
 .messages.links-open {
-	transform: translateX(-9.5rem);
+	transform: translateX(-10.5rem);
 }
 .user-msg, .ai-msg {
 	display: flex;
@@ -175,7 +175,7 @@ hr {
 	transition: transform 0.5s ease;
 }
 .input-container.links-open {
-	transform: translateX(-9.5rem);
+	transform: translateX(10.5rem);
 }
 .input-wrapper {
 	position: relative;
