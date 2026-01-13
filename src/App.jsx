@@ -1,17 +1,29 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './App.css'
 import ReactMarkDown from 'react-markdown';
 import TypingEffect from "./components/TypingEffect";
 
 export default function App() {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(() => {
+		const stored = localStorage.getItem("messages");
+		return stored ? JSON.parse(stored) : [];
+	});
     const [input, setInput] = useState("");
 
 	const [openLinkBox, setOpenLinkBox] = useState(false);
     const [showLinksId, setShowLinksId] = useState(null);
 
+	const [showWarning, setShowWarning] = useState(false);
+
+	const abortControllerRef = useRef(null);
+
     const handleSend = async () => {
         if(!input.trim()) return;
+
+		abortControllerRef.current?.abort();
+
+		const controller = new AbortController();
+		abortControllerRef.current = controller;
 
         const userMessage = {
             role: "user",
@@ -37,7 +49,8 @@ export default function App() {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: history })
+            body: JSON.stringify({ contents: history }),
+			signal: controller.signal
         };
 
         try {
@@ -58,7 +71,8 @@ export default function App() {
             const linksRequestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: linksHistory })
+                body: JSON.stringify({ contents: linksHistory }),
+				signal: controller.signal
             };
 
             const linksResponse = await fetch(API_URL, linksRequestOptions);
@@ -85,6 +99,9 @@ export default function App() {
                 }
             ]);
         } catch(error) {
+			if (error.name === "AbortError") {
+				return;
+			}
             console.log(error);
             // Replace thinking message with error message
             setMessages(prev => [
@@ -93,7 +110,6 @@ export default function App() {
             ]);
         }
     };
-
 	
 	const currentLinksMsg = messages.find(
 		m => m.id === showLinksId && m.role === "assistant" && m.links?.length > 0
@@ -140,29 +156,38 @@ export default function App() {
 	}
 
 	useEffect(() => {
-		const storedMessages = localStorage.getItem("messages");
-		if (storedMessages) {
-			setMessages(JSON.parse(storedMessages));
-		}
-	}, [])
-
-	useEffect(() => {
 		localStorage.setItem("messages", JSON.stringify(messages));
 	}, [messages]);
 
 	const clearChat = () => {
+		abortControllerRef.current?.abort();
+		abortControllerRef.current = null;
+
 		setMessages([]);
 		localStorage.removeItem("messages");
+		setShowLinksId(null);
+		setOpenLinkBox(false);
+		setShowWarning(false);
 	}
 
     return (
         <div className="container">
 			<div 
 				className="clear-btn"
-				onClick={clearChat}
+				onClick={() => setShowWarning(true)}
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#e3e3e3"><path d="M480-80q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-440h80q0 117 81.5 198.5T480-160q117 0 198.5-81.5T760-440q0-117-81.5-198.5T480-720h-6l62 62-56 58-160-160 160-160 56 58-62 62h6q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-440q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-80Z"/></svg>
 			</div>
+					<div className={`modal-overlay ${showWarning ? "show" : ""}`}>
+						<div className={`modal ${showWarning ? "show" : ""}`}>
+							<h2>Clear Chat?</h2>
+							<p>This action cannot be undone.</p>
+							<div className="modal-buttons">
+								<button onClick={clearChat} className="confirm-btn">Clear</button>
+								<button onClick={() => setShowWarning(false)} className="cancel-btn">Cancel</button>
+							</div>
+						</div>
+					</div>
 			{messages.length === 0 && (
 				<div className="welcome-container">
 					<h1 className="welcome-header">This is Liquid</h1>
