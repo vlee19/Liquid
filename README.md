@@ -1,5 +1,7 @@
 # colorstackwinterhack2025-Liquid
 
+<img width="1918" height="902" alt="image" src="https://github.com/user-attachments/assets/f958d30a-918e-4859-809e-33db2d005ad2" />
+
 ## Project Description
 Liquid is a transparency-focused AI chatbot designed to encourage critical engagement with AI-generated information. Rather than presenting responses as authoritative answers, Liquid pairs each research-based response with accessible source links, allowing users to explore where information originates and make informed judgments about its reliability.
 
@@ -48,3 +50,7 @@ By integrating transparency directly into the conversational interface, Liquid l
 ## Project Links
 - Demo Video – https://www.youtube.com/watch?v=Uftg0OHcVE8
 - Google Slides link – https://docs.google.com/presentation/d/1dAJQwjiOP72ATxbttCv4y7923x2NkQcyEqn49hhzsqY/edit?usp=sharing
+
+## Additional Screenshots
+<img width="1918" height="903" alt="image" src="https://github.com/user-attachments/assets/3559b5c2-9e7f-4ca9-8128-c7024944ad11" />
+
