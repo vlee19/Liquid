@@ -278,14 +278,14 @@ hr {
 	transition: transform 0.5s ease;
 }
 .arrow-btn.open {
-	transform: translateY(-50%) translateX(-23rem);
+	transform: translateY(-50%) translateX(-21.5rem);
 }
 
 .arrow-btn:not(.open):hover {
 	transform: translateY(-50%) translateX(-0.6rem);
 }
 .arrow-btn.open:hover {
-	transform: translateY(-50%) translateX(-22.5rem);
+	transform: translateY(-50%) translateX(-21rem);
 }
 
 .arrow-btn svg {
