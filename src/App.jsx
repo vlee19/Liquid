@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import ReactMarkDown from 'react-markdown';
+import TypingEffect from "./components/TypingEffect";
 
 export default function App() {
     const [messages, setMessages] = useState([]);
@@ -8,7 +9,6 @@ export default function App() {
 
 	const [openLinkBox, setOpenLinkBox] = useState(false);
     const [showLinksId, setShowLinksId] = useState(null);
-    
 
     const handleSend = async () => {
         if(!input.trim()) return;
@@ -94,65 +94,173 @@ export default function App() {
         }
     };
 
+	
+	const currentLinksMsg = messages.find(
+		m => m.id === showLinksId && m.role === "assistant" && m.links?.length > 0
+	);
+	
+	const activeMsg = messages
+		.slice()
+		.reverse()
+		.find(m => m.role === "assistant" && m.links?.length > 0);
+
+	useEffect(() => {
+		if (activeMsg && showLinksId == null) {
+			setShowLinksId(activeMsg.id);
+		}
+	}, [activeMsg, showLinksId]);
+	
+	useEffect(() => {
+		if (showLinksId && openLinkBox) {
+			const msgElement = document.getElementById(`msg-${showLinksId}`);
+			msgElement?.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+	}, [showLinksId, openLinkBox]);
+	
+	const linkMessages = messages.filter(
+		m => m.role === "assistant" && m.links?.length > 0
+	);
+	const navDisabled = linkMessages.length < 2;
+	
+	const handlePrev = () => {
+		if (!showLinksId || linkMessages.length === 0) return;
+
+		const currIndex = linkMessages.findIndex(m => m.id === showLinksId);
+		const prevIndex = (currIndex - 1 + linkMessages.length) % linkMessages.length;
+
+		setShowLinksId(linkMessages[prevIndex].id);
+	}
+	const handleNext = () => {
+		if (!showLinksId || linkMessages.length === 0) return;
+
+		const currIndex = linkMessages.findIndex(m => m.id === showLinksId);
+		const nextIndex = (currIndex + 1) % linkMessages.length;
+
+		setShowLinksId(linkMessages[nextIndex].id);
+	}
+
+	useEffect(() => {
+		const storedMessages = localStorage.getItem("messages");
+		if (storedMessages) {
+			setMessages(JSON.parse(storedMessages));
+		}
+	}, [])
+
+	useEffect(() => {
+		localStorage.setItem("messages", JSON.stringify(messages));
+	}, [messages]);
+
+	const clearChat = () => {
+		setMessages([]);
+		localStorage.removeItem("messages");
+	}
+
     return (
         <div className="container">
-            <div className="messages">
+			<div 
+				className="clear-btn"
+				onClick={clearChat}
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#e3e3e3"><path d="M480-80q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-440h80q0 117 81.5 198.5T480-160q117 0 198.5-81.5T760-440q0-117-81.5-198.5T480-720h-6l62 62-56 58-160-160 160-160 56 58-62 62h6q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-440q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-80Z"/></svg>
+			</div>
+			{messages.length === 0 && (
+				<div className="welcome-container">
+					<h1 className="welcome-header">This is Liquid</h1>
+					<TypingEffect
+						texts={[
+							"How can I help you today?",
+							"What questions do you have for me?",
+							"Can I assist you with anything?",
+							"What should I help you with?",
+							"What do you need to know?"
+						]}
+						typingSpeed={40}
+						deletingSpeed={50}
+						pause={2000}
+						loop={true}
+						className="typing-subtitle"
+						/>
+				</div>
+			)}
+            <div className={`messages ${openLinkBox ? "links-open" : ""}`}>
                 {messages.map((msg, index) => (
                     <div 
                         key={index}
-                        className={`${msg.role === "user" ? "user" : "ai"}-msg`}
+						id={msg.id ? `msg-${msg.id}` : undefined}
+                        className={`${msg.role === "user" ? "user" : "ai"}-msg ${msg.id === showLinksId && openLinkBox ? "active" : ""}`}
                     >
-						<ReactMarkDown>
-                        	{msg.content}
-						</ReactMarkDown>
+						{msg.role === "assistant" && msg.content === "Thinking..." ? (
+
+							<div className="thinking-msg">
+								{msg.content}
+								<svg className="spinner" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#272727ff"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-17 11.5-28.5T840-520q17 0 28.5 11.5T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z"/></svg>
+							</div>
+						) : (
+							<ReactMarkDown>{msg.content}</ReactMarkDown>
+						)}
 
                         {msg.role === "assistant" && msg.links?.length > 0 && (
                             <button
                                 className="view-links-btn"
                                 onClick={() => {
-										setShowLinksId(showLinksId === msg.id ? null : msg.id),
-										setOpenLinkBox(prev => !prev)
+										if (openLinkBox && showLinksId === msg.id) {
+											setShowLinksId(null),
+											setOpenLinkBox(false)
+										} else {
+											setShowLinksId(msg.id);
+											setOpenLinkBox(true);
+										}
 									}
 								}
                             >
-                                {showLinksId === msg.id && openLinkBox === true ? "Hide" : "View"}
+                                <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5d5d5dff"><path d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z"/></svg>
                             </button>
                         )}
 
-                        {msg.role === "assistant" && msg.links?.length > 0 && (
-                            <div className={`links-container ${showLinksId === msg.id && openLinkBox ? "open" : ""}`}>
-                                <div className="link-box">
-									<button 
-										className={openLinkBox ? "close-btn" : "open-btn"}
-										onClick={() => {
-											if (openLinkBox) {
-												setShowLinksId(null),
-												setOpenLinkBox(false)
-											} else {
-												setShowLinksId(msg.id),
-												setOpenLinkBox(true)
-											}
-										}}
-									>
-										{openLinkBox ? (
-											<svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#3c3c3ca1"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg>
-										) : (
-											<svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#3c3c3ca1"><path d="M640-80 240-480l400-400 71 71-329 329 329 329-71 71Z"/></svg>
-										)}
-									</button>
-									
-                                    {msg.links.map((l, j) => (
-                                        <a key={j} href={l.url} target="_blank" rel="noreferrer">
-                                            {l.url}
-                                        </a>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
                     </div>
                 ))}
             </div>
-            <div className="input-container">
+			<div className={`links-container ${showLinksId && openLinkBox ? "open" : ""}`}>
+				<div className="link-box">
+					<h1>Sources</h1>
+					{currentLinksMsg?.links?.map((l, j) => (
+						<a key={j} href={l.url} target="_blank" rel="noreferrer">
+							{l.url}
+						</a>
+					))}
+				</div>
+				<div className="links-nav">
+					<button
+						className="prev-btn"
+						onClick={handlePrev}
+						disabled={navDisabled}
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#ffffffff"><path d="M640-200 200-480l440-280v560Zm-80-280Zm0 134v-268L350-480l210 134Z"/></svg>
+					</button>
+
+					<button
+						className="next-btn"
+						onClick={handleNext}
+						disabled={navDisabled}
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#ffffffff"><path d="M640-200 200-480l440-280v560Zm-80-280Zm0 134v-268L350-480l210 134Z"/></svg>
+					</button>
+				</div>
+			</div>
+			
+			{activeMsg && (
+				<button 
+					className={`arrow-btn ${openLinkBox ? "open" : ""}`}
+					onClick={() => {
+						if (!showLinksId) {
+							setShowLinksId(activeMsg.id);
+						}
+						setOpenLinkBox(prev => !prev);}}
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#3c3c3ca1"><path d="M640-80 240-480l400-400 71 71-329 329 329 329-71 71Z"/></svg>
+				</button>
+			)}
+            <div className={`input-container ${openLinkBox ? "links-open" : ""}`}>
                 <div className="input-wrapper">
                     <input 
                         value={input}
@@ -161,7 +269,9 @@ export default function App() {
                         onKeyDown={(e) => e.key === "Enter" && handleSend()}
                         className="user-input"
                     />
-                    <button onClick={handleSend} className="send-btn">Send</button>
+                    <button onClick={handleSend} className="send-btn">
+						<svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#ffffffff"><path d="M440-240v-368L296-464l-56-56 240-240 240 240-56 56-144-144v368h-80Z"/></svg>
+					</button>
                 </div>
             </div>
         </div>
